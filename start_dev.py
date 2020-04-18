@@ -16,9 +16,11 @@ async def main(connection):
         # Frontend work - Tab 1
         top_session_1 = window.current_tab.current_session
         down_session_1 = await top_session_1.async_split_pane(vertical=False)
+        # Tests session
         await top_session_1.async_set_name("fe tests")
         await top_session_1.async_send_text(f"cd {frontendDir}\n")
         await top_session_1.async_send_text("yarn test\n")
+        # Dev session
         await down_session_1.async_set_name("fe dev")
         await down_session_1.async_send_text(f"cd {frontendDir}\n")
 
@@ -26,10 +28,12 @@ async def main(connection):
         next_tab = await window.async_create_tab()
         await next_tab.async_activate()
         top_session_2 = window.current_tab.current_session
+        down_session_2 = await top_session_2.async_split_pane(vertical=False)
+        # FE server session
         await top_session_2.async_set_name("fe server")
         await top_session_2.async_send_text(f"cd {frontendDir}\n")
         await top_session_2.async_send_text("yarn start\n")
-        down_session_2 = await top_session_2.async_split_pane(vertical=False)
+        # Storybook server session
         await down_session_2.async_set_name("storybook server")
         await down_session_2.async_send_text(f"cd {frontendDir}\n")
         await down_session_2.async_send_text("yarn storybook\n")
@@ -38,10 +42,12 @@ async def main(connection):
         backend_window = await window.async_create(connection)
         await backend_window.async_activate()
         top_session_3 = backend_window.current_tab.current_session
+        down_session_3 = await top_session_3.async_split_pane(vertical=False)
+        # BE server session
         await top_session_3.async_set_name("be server")
         await top_session_3.async_send_text(f"cd {backendDir}\n")
         await top_session_3.async_send_text("rails s\n")
-        down_session_3 = await top_session_3.async_split_pane(vertical=False)
+        # BE dev session
         await down_session_3.async_set_name("be dev")
         await down_session_3.async_send_text(f"cd {backendDir}\n")
     else:
